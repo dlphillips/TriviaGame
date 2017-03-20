@@ -1,5 +1,11 @@
 $( document ).ready(function() {
-    function testwork() {
-		    console.log( "ready!" );
-    }
+
+	console.log( "ready!" );
+
+	$(".list-group-item").on('click', function() {
+		clickAnswer = $(this).attr('value'); 
+		console.log(clickAnswer);
+		
+	});
+
 });
