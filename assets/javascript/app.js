@@ -1,10 +1,19 @@
 $( document ).ready(function() {
 
-	console.log( "ready!" );
-
-	//initialize variable	
+	//initialize variables	
 	var questions = [];
 	var correctAnswer = ""
+	var qCorrect = 0;
+	var qIncorrect = 0;
+	var i = 0;
+	var j = 0;
+	var ques = ""
+	var opt1 = ""
+ 	var opt2 = ""
+	var opt3 = ""
+	var opt4 = ""
+	var countdownTimer = 0;
+	var clickAnswer = ""
 
 	//load all the data to questions[]
 
@@ -98,24 +107,53 @@ $( document ).ready(function() {
 		answer:"4"
 	}; 
 
-	// all the fun happens in this loop
 
-	for (var i = 0; i < questions.length; i++) {
+	resetQuestion();
+	startTimer(); 					
 
+
+	function startTimer() {
+		j = 30;
+	    countdownTimer = setInterval(function() {
+	        $("#timer").html(j + " seconds remaining");
+	        j = j - 1;
+	        if (j < 0) {
+	            clearInterval(countdownTimer);
+	            qIncorrect++;
+	            i++;
+	            resetQuestion();
+				startTimer(); 	
+	        }
+	    }, 1000);
+	}
+
+	function resetQuestion() {
 		$("#triviaQuestion").html(questions[i].question);
 		$("#op1").html(questions[i].option1);
 		$("#op2").html(questions[i].option2);
 		$("#op3").html(questions[i].option3);
 		$("#op4").html(questions[i].option4);
 		correctAnswer = questions[i].answer;
-
-		// $(".list-group-item").on('click', function() {
-		// 	clickAnswer = $(this).attr('value'); 
-		// 	console.log(clickAnswer);
-
-		// });
-
 	}
+
+		$(".list-group-item").on("click", function() {
+			clickAnswer = $(this).attr("value"); 
+			console.log(clickAnswer);
+			console.log(correctAnswer);
+			clearInterval(countdownTimer);
+			if (clickAnswer === correctAnswer) { 
+				alert("your are correct");
+				qCorrect++;
+				console.log(qCorrect);
+			} else {
+				alert("wrong");
+				qIncorrect++;
+				console.log(qIncorrect);
+			}
+			i++;
+            resetQuestion();
+			startTimer(); 	
+		})
 
 
 });

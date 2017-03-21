@@ -21,13 +21,13 @@ then changes to picture of answer if correct answer chosen
 if incorrect, "the correct answer was: ..." displays above the image
 
 
-
-question:"In Sarasota, Florida, it is illegal to do what while wearing a bathing suit in a public place?"
-option1:"Sing"
-option2:"Dance"
-option3:"Shower"
-option4:"Eat"
-answer:"1"
+questions[1] = {
+question:"In Sarasota, Florida, it is illegal to do what while wearing a bathing suit in a public place?",
+option1:"Sing",
+option2:"Dance",
+option3:"Shower",
+option4:"Eat",
+answer:"1"}
 
 question:"In Michigan, a woman must have her husband's permission to do what?
 option1:"Cut her hair"
