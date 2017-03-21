@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	//initialize variables	
 	var questions = [];
 	var correctAnswer = ""
+	var answerText = ""
 	var qImage = ""
 	var qCorrect = 0;
 	var qIncorrect = 0;
@@ -25,7 +26,8 @@ $( document ).ready(function() {
 		option3:"Shower",
 		option4:"Eat",
 		answer:"1",
-		image:"q0.gif"
+		image:"q0.gif",
+		answertxt:"Sing"
 	}; 
 
 	questions[1] = {
@@ -35,7 +37,8 @@ $( document ).ready(function() {
 		option3:"Go to a movie",
 		option4:"Eat bacon",
 		answer:"1",
-		image:"q1.gif"
+		image:"q1.gif",
+		answertxt:"Cut her hair"
 	}; 
 
 	questions[2] = {
@@ -45,7 +48,8 @@ $( document ).ready(function() {
 		option3:"Religious garb",
 		option4:"Nothing",
 		answer:"2",
-		image:"q2.gif"	
+		image:"q2.gif",
+		answertxt:"A Santa suit"
 	}; 
 
 	questions[3] = {
@@ -55,7 +59,8 @@ $( document ).ready(function() {
 		option3:"Swim",
 		option4:"Whistle",
 		answer:"4",
-		image:"q3.gif"
+		image:"q3.gif",
+		answertxt:"Whistle"
 	}; 
 
 	questions[4] = {
@@ -65,7 +70,8 @@ $( document ).ready(function() {
 		option3:"A small animal",
 		option4:"An ice cream cone",
 		answer:"4",
-		image:"q4.gif"
+		image:"q4.gif",
+		answertxt:"An ice cream cone"
 	}; 
 
 	questions[5] = {
@@ -75,7 +81,8 @@ $( document ).ready(function() {
 		option3:"Humans",
 		option4:"Monkeys",
 		answer:"1",
-		image:"q5.gif"
+		image:"q5.gif",
+		answertxt:"Skunks"
 	}; 
 
 	questions[6] = {
@@ -85,7 +92,8 @@ $( document ).ready(function() {
 		option3:"Pay your taxes",
 		option4:"Drink milk",
 		answer:"1",
-		image:"q6.gif"
+		image:"q6.gif",
+		answertxt:"Take a bath"
 	}; 
 
 	questions[7] = {
@@ -95,7 +103,8 @@ $( document ).ready(function() {
 		option3:"Dance with it",
 		option4:"Take a picture of it",
 		answer:"1",
-		image:"q7.gif"
+		image:"q7.gif",
+		answertxt:"Tie a giraffe to it"
 	}; 
 
 	questions[8] = {
@@ -105,7 +114,8 @@ $( document ).ready(function() {
 		option3:"A Christmas present",
 		option4:"A drink of water",
 		answer:"2",
-		image:"q8.gif"
+		image:"q8.gif",
+		answertxt:"A box of candy"
 	}; 
 
 	questions[9] = {
@@ -115,9 +125,9 @@ $( document ).ready(function() {
 		option3:"Jump into snow",
 		option4:"Look at a moose",
 		answer:"4",
-		image:"q9.jpg"
+		image:"q9.jpg",
+		answertxt:"Look at a moose"
 	}; 
-
 
 	resetQuestion();
 	startTimer(); 					
@@ -130,6 +140,7 @@ $( document ).ready(function() {
 	        j = j - 1;
 	        if (j < 0) {
 	            clearInterval(countdownTimer);
+				$("#triviaQuestion").html("Time's up!!! The answer is '"+answerText+"'")
 	            qIncorrect++;
 	            i++;
 		        showAnswer();
@@ -148,30 +159,36 @@ $( document ).ready(function() {
 		$("#op2").html(questions[i].option2);
 		$("#op3").html(questions[i].option3);
 		$("#op4").html(questions[i].option4);
+		$("#questCont").show();
+		$("#imageDiv").hide();
 		correctAnswer = questions[i].answer;
 		qImage = questions[i].image;
-		$("#topLeft").html("<h3>Left 1</h3>");
+		answerText = questions[i].answertxt;
+		$("#topLeft").html("<h3></h3>");
 
 	}
 
 	function showAnswer() {
 		var tImg = "<img src='assets/images/"+qImage+"' width='400px'/>"
-		$("#topLeft").html(tImg);
-		$("#timer").html("");
-		setTimeout(displayImage, 5000);
+		$("#questCont").hide();
+		$("#imageDiv").html(tImg);
+		$("#imageDiv").show();
+		// $("#timer").html("");
+		setTimeout(displayImage, 7000);
 		// if (count === images.length) {
 		// count = 0;
 	}
 
 	$(".list-group-item").on("click", function() {
 		clearInterval(countdownTimer);
+
 		clickAnswer = $(this).attr("value"); 
 		if (clickAnswer === correctAnswer) { 
-			alert("your are correct");
+			$("#triviaQuestion").html("Correct! Crazy, isn't it??")
 			qCorrect++;
 			console.log(qCorrect);
 		} else {
-			alert("wrong");
+			$("#triviaQuestion").html("Sorry, you missed this one. The answer is '"+answerText+"'")
 			qIncorrect++;
 			console.log(qIncorrect);
 		}
