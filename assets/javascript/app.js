@@ -3,6 +3,7 @@ $( document ).ready(function() {
 	//initialize variables	
 	var questions = [];
 	var correctAnswer = ""
+	var qImage = ""
 	var qCorrect = 0;
 	var qIncorrect = 0;
 	var i = 0;
@@ -23,7 +24,8 @@ $( document ).ready(function() {
 		option2:"Dance",
 		option3:"Shower",
 		option4:"Eat",
-		answer:"1"
+		answer:"1",
+		image:"q0.gif"
 	}; 
 
 	questions[1] = {
@@ -32,7 +34,8 @@ $( document ).ready(function() {
 		option2:"Buy a horse",
 		option3:"Go to a movie",
 		option4:"Eat bacon",
-		answer:"1"
+		answer:"1",
+		image:"q1.gif"
 	}; 
 
 	questions[2] = {
@@ -41,7 +44,8 @@ $( document ).ready(function() {
 		option2:"A Santa suit",
 		option3:"Religious garb",
 		option4:"Nothing",
-		answer:"2"		
+		answer:"2",
+		image:"q2.gif"	
 	}; 
 
 	questions[3] = {
@@ -50,7 +54,8 @@ $( document ).ready(function() {
 		option2:"Sleep",
 		option3:"Swim",
 		option4:"Whistle",
-		answer:"4"
+		answer:"4",
+		image:"q3.gif"
 	}; 
 
 	questions[4] = {
@@ -59,7 +64,8 @@ $( document ).ready(function() {
 		option2:"Eggs",
 		option3:"A small animal",
 		option4:"An ice cream cone",
-		answer:"4"
+		answer:"4",
+		image:"q4.gif"
 	}; 
 
 	questions[5] = {
@@ -68,7 +74,8 @@ $( document ).ready(function() {
 		option2:"Fish",
 		option3:"Humans",
 		option4:"Monkeys",
-		answer:"1"
+		answer:"1",
+		image:"q5.gif"
 	}; 
 
 	questions[6] = {
@@ -77,7 +84,8 @@ $( document ).ready(function() {
 		option2:"Go outside your home",
 		option3:"Pay your taxes",
 		option4:"Drink milk",
-		answer:"1"
+		answer:"1",
+		image:"q6.gif"
 	}; 
 
 	questions[7] = {
@@ -86,7 +94,8 @@ $( document ).ready(function() {
 		option2:"Stand under it at night",
 		option3:"Dance with it",
 		option4:"Take a picture of it",
-		answer:"1"
+		answer:"1",
+		image:"q7.gif"
 	}; 
 
 	questions[8] = {
@@ -95,7 +104,8 @@ $( document ).ready(function() {
 		option2:"A box of candy",
 		option3:"A Christmas present",
 		option4:"A drink of water",
-		answer:"2"
+		answer:"2",
+		image:"q8.gif"
 	}; 
 
 	questions[9] = {
@@ -104,7 +114,8 @@ $( document ).ready(function() {
 		option2:"Count trees",
 		option3:"Jump into snow",
 		option4:"Look at a moose",
-		answer:"4"
+		answer:"4",
+		image:"q9.jpg"
 	}; 
 
 
@@ -121,10 +132,14 @@ $( document ).ready(function() {
 	            clearInterval(countdownTimer);
 	            qIncorrect++;
 	            i++;
-	            resetQuestion();
-				startTimer(); 	
+		        showAnswer();
 	        }
 	    }, 1000);
+	}
+
+	function displayImage() {
+		resetQuestion();
+        startTimer(); 
 	}
 
 	function resetQuestion() {
@@ -134,26 +149,36 @@ $( document ).ready(function() {
 		$("#op3").html(questions[i].option3);
 		$("#op4").html(questions[i].option4);
 		correctAnswer = questions[i].answer;
+		qImage = questions[i].image;
+		$("#topLeft").html("<h3>Left 1</h3>");
+
 	}
 
-		$(".list-group-item").on("click", function() {
-			clickAnswer = $(this).attr("value"); 
-			console.log(clickAnswer);
-			console.log(correctAnswer);
-			clearInterval(countdownTimer);
-			if (clickAnswer === correctAnswer) { 
-				alert("your are correct");
-				qCorrect++;
-				console.log(qCorrect);
-			} else {
-				alert("wrong");
-				qIncorrect++;
-				console.log(qIncorrect);
-			}
-			i++;
-            resetQuestion();
-			startTimer(); 	
-		})
+	function showAnswer() {
+		var tImg = "<img src='assets/images/"+qImage+"' width='400px'/>"
+		$("#topLeft").html(tImg);
+		$("#timer").html("");
+		setTimeout(displayImage, 5000);
+		// if (count === images.length) {
+		// count = 0;
+	}
+
+	$(".list-group-item").on("click", function() {
+		clearInterval(countdownTimer);
+		clickAnswer = $(this).attr("value"); 
+		if (clickAnswer === correctAnswer) { 
+			alert("your are correct");
+			qCorrect++;
+			console.log(qCorrect);
+		} else {
+			alert("wrong");
+			qIncorrect++;
+			console.log(qIncorrect);
+		}
+		i++;
+        showAnswer();
+	})
 
 
 });
+
