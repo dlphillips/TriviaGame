@@ -18,9 +18,7 @@ $( document ).ready(function() {
 	var opt4 = ""
 	var countdownTimer = 0;
 
-
-	//load all the data to questions[]
-
+	//load all the questions, answers & images to questions[]
 	questions[0] = {
 		question:"In Sarasota, Florida, it is illegal to do what while wearing a bathing suit in a public place?",
 		option1:"Sing",
@@ -131,22 +129,24 @@ $( document ).ready(function() {
 		answertxt:"Look at a moose"
 	}; 
 
-	// function to reset variables and restart if user chooses to play again 	
+	// function to reset variables and start/restart the game. 	
 	function gameReset() {
 		i = 0;
 		qCorrect = 0;
 		qIncorrect = 0;
 		qUnanswered = 0;
 		$("#triviaQuestion").show();
-		$("#startBtn").hide();
 		$("#timer").show();
+		$("#startBtn").hide();
 		$("#resultsDiv").hide();
 		resetQuestion();
 		startTimer(); 
 	}
 
-	// 30 second timer function. Displays remainiung seconds at #timer.
+	// 30 second timer function. Displays remaining seconds (j) at #timer. Keeps track of unanswered question count
+	// (those without a click within 30 seconds).
 	function startTimer() {
+		$("#timer").html(" ");
 		j = 30;
 	    countdownTimer = setInterval(function() {
 	        $("#timer").html(j + " seconds remaining");
@@ -161,10 +161,10 @@ $( document ).ready(function() {
 	    }, 1000);
 	}
 
-
+	// function to move to next question & reset timer
 	function nextQuestion() {
-		resetQuestion();
         startTimer(); 
+		resetQuestion();
 	}
 
 	// replace the html with the questions and possible answers. Populate variables with correct answer id, text & image.
@@ -181,8 +181,8 @@ $( document ).ready(function() {
 		answerText = questions[i].answertxt;
 	}
 
-	// hide the question div, update image and show image div. Wait 5 seconds then on to next question. If last question, show call results function
-
+	// hide the question div, update image and show image div. Wait 5 seconds then move to next question (nextQuestion()).
+	// If last question, call results function (showResults()).
 	function showAnswer() {
 		var tImg = "<img src='assets/images/"+qImage+"' width='400px'/>"
 		$("#questCont").hide();
@@ -195,23 +195,23 @@ $( document ).ready(function() {
 		}
 	}
 
-	// listen for click on "list-group". Check if answer is correct and update response. Call show answer to display image.
+	// listen for click on "list-group". Check if answer is correct and update #triviaQuestion. Call showAnswer() to display image.
 	$(".list-group-item").on("click", function() {
 		clearInterval(countdownTimer);
 
 		clickAnswer = $(this).attr("value"); 
 		if (clickAnswer === correctAnswer) { 
-			$("#triviaQuestion").html("Correct! Crazy, isn't it??")
+			$("#triviaQuestion").html("Correct!")
 			qCorrect++;
 		} else {
-			$("#triviaQuestion").html("Sorry, you missed this one. The answer is '"+answerText+"'")
+			$("#triviaQuestion").html("Sorry, that's incorrect. The answer is '"+answerText+"'")
 			qIncorrect++;
 		}
 		i++;
         showAnswer();
 	})
 
-	// update results div and show(). Hide other irrelavent divs. Change text on start button and show()
+	// Function to show game results. Update results div with stats and show() them. Hide() other irrelevant divs. Change text on start button and show().
 	function showResults() {
 		$("#txtCorrect").html("Correct Answers: "+ qCorrect);
 		$("#txtIncorrect").html("Incorrect Answers: "+ qIncorrect);
@@ -220,8 +220,8 @@ $( document ).ready(function() {
 		$("#resultsDiv").show();
 		$("#triviaQuestion").hide();
 		$("#timer").hide();
-		$("#startBtn").html("Play Again!");
-		$("#startBtn").show();
+		$("#startBtn").html("Play Again!").show();
+		$("#timer").html(" ");
 	}
 
 	// button to start game
@@ -229,7 +229,7 @@ $( document ).ready(function() {
 		gameReset();
 	});
 
-	//next three lines execute at page load. Three items hidden until game is started
+	// next three lines execute on page load. Three items to be hidden until start button is clicked.
 	$("#questCont").hide();
 	$("#resultsDiv").hide();
 	$("#timer").hide();

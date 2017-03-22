@@ -1,8 +1,27 @@
 body {
 	font-family: 'Coustard', serif;
+	background-color:#99ccff;
 }
 
 .jumbotron {
     background-color:#3399ff; 
     color: white;
+}
+
+.container {
+  	background-color: #fff;
+}
+
+@link-color:       @brand-primary;
+@link-hover-color: darken(@link-color, 15%);
+
+// Usage
+a {
+  color: @link-color;
+  text-decoration: none;
+
+  &:hover {
+    color: #3399ff;
+    text-decoration: underline;
+  }
 }
