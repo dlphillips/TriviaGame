@@ -4,6 +4,7 @@ $( document ).ready(function() {
 	var questions = [];
 	var correctAnswer = ""
 	var answerText = ""
+	var clickAnswer = ""
 	var qImage = ""
 	var qCorrect = 0;
 	var qIncorrect = 0;
@@ -15,7 +16,7 @@ $( document ).ready(function() {
 	var opt3 = ""
 	var opt4 = ""
 	var countdownTimer = 0;
-	var clickAnswer = ""
+
 
 	//load all the data to questions[]
 
@@ -129,8 +130,16 @@ $( document ).ready(function() {
 		answertxt:"Look at a moose"
 	}; 
 
-	resetQuestion();
-	startTimer(); 					
+	
+	function gameReset() {
+		i = 0;
+		$("#triviaQuestion").show();
+		$("#startBtn").hide();
+		$("#timer").show();
+		$("#resultsDiv").hide();
+		resetQuestion();
+		startTimer(); 
+	}
 
 
 	function startTimer() {
@@ -144,11 +153,15 @@ $( document ).ready(function() {
 	            qIncorrect++;
 	            i++;
 		        showAnswer();
+		        if (i === questions.length) {
+						showResults();
+						return;
+				}
 	        }
 	    }, 1000);
 	}
 
-	function displayImage() {
+	function nextQuestion() {
 		resetQuestion();
         startTimer(); 
 	}
@@ -164,8 +177,6 @@ $( document ).ready(function() {
 		correctAnswer = questions[i].answer;
 		qImage = questions[i].image;
 		answerText = questions[i].answertxt;
-		$("#topLeft").html("<h3></h3>");
-
 	}
 
 	function showAnswer() {
@@ -173,10 +184,7 @@ $( document ).ready(function() {
 		$("#questCont").hide();
 		$("#imageDiv").html(tImg);
 		$("#imageDiv").show();
-		// $("#timer").html("");
-		setTimeout(displayImage, 7000);
-		// if (count === images.length) {
-		// count = 0;
+		setTimeout(nextQuestion, 2000);
 	}
 
 	$(".list-group-item").on("click", function() {
@@ -186,16 +194,36 @@ $( document ).ready(function() {
 		if (clickAnswer === correctAnswer) { 
 			$("#triviaQuestion").html("Correct! Crazy, isn't it??")
 			qCorrect++;
-			console.log(qCorrect);
 		} else {
 			$("#triviaQuestion").html("Sorry, you missed this one. The answer is '"+answerText+"'")
 			qIncorrect++;
-			console.log(qIncorrect);
 		}
 		i++;
         showAnswer();
+        if (i === questions.length) {
+			showResults();
+			return;
+		}
 	})
 
+	function showResults() {
+		console.log("Correct "+ qCorrect);
+		console.log("Incorrect "+qIncorrect);
+		$("#txtCorrect").html("Correct Answers: "+ qCorrect);
+		$("#txtIncorrect").html("Incorrect Answers: "+ qIncorrect);
+		$("#imageDiv").hide();
+		$("#resultsDiv").show();
+		$("#triviaQuestion").hide();
+		$("#timer").hide();
+		$("#startBtn").html("Play Again!");
+		$("#startBtn").show();
+	}
 
+	$("#startBtn").on("click", function() {
+		gameReset();
+	});
+	$("#questCont").hide();
+	$("#resultsDiv").hide();
+	$("#timer").hide();
 });
 
