@@ -133,6 +133,8 @@ $( document ).ready(function() {
 	
 	function gameReset() {
 		i = 0;
+		qCorrect = 0;
+		qIncorrect = 0;
 		$("#triviaQuestion").show();
 		$("#startBtn").hide();
 		$("#timer").show();
@@ -153,10 +155,6 @@ $( document ).ready(function() {
 	            qIncorrect++;
 	            i++;
 		        showAnswer();
-		        if (i === questions.length) {
-						showResults();
-						return;
-				}
 	        }
 	    }, 1000);
 	}
@@ -184,7 +182,11 @@ $( document ).ready(function() {
 		$("#questCont").hide();
 		$("#imageDiv").html(tImg);
 		$("#imageDiv").show();
-		setTimeout(nextQuestion, 2000);
+        if (i === questions.length) {
+			setTimeout(showResults, 4000);
+		} else {
+			setTimeout(nextQuestion, 4000);
+		}
 	}
 
 	$(".list-group-item").on("click", function() {
@@ -200,10 +202,6 @@ $( document ).ready(function() {
 		}
 		i++;
         showAnswer();
-        if (i === questions.length) {
-			showResults();
-			return;
-		}
 	})
 
 	function showResults() {
