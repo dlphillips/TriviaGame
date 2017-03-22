@@ -8,6 +8,7 @@ $( document ).ready(function() {
 	var qImage = ""
 	var qCorrect = 0;
 	var qIncorrect = 0;
+	var qUnanswered = 0;
 	var i = 0;
 	var j = 0;
 	var ques = ""
@@ -130,11 +131,12 @@ $( document ).ready(function() {
 		answertxt:"Look at a moose"
 	}; 
 
-	
+	// function to reset variables and restart if user chooses to play again 	
 	function gameReset() {
 		i = 0;
 		qCorrect = 0;
 		qIncorrect = 0;
+		qUnanswered = 0;
 		$("#triviaQuestion").show();
 		$("#startBtn").hide();
 		$("#timer").show();
@@ -143,7 +145,7 @@ $( document ).ready(function() {
 		startTimer(); 
 	}
 
-
+	// 30 second timer function. Displays remainiung seconds at #timer.
 	function startTimer() {
 		j = 30;
 	    countdownTimer = setInterval(function() {
@@ -152,18 +154,20 @@ $( document ).ready(function() {
 	        if (j < 0) {
 	            clearInterval(countdownTimer);
 				$("#triviaQuestion").html("Time's up!!! The answer is '"+answerText+"'")
-	            qIncorrect++;
+	            qUnanswered++;
 	            i++;
 		        showAnswer();
 	        }
 	    }, 1000);
 	}
 
+
 	function nextQuestion() {
 		resetQuestion();
         startTimer(); 
 	}
 
+	// replace the html with the questions and possible answers. Populate variables with correct answer id, text & image.
 	function resetQuestion() {
 		$("#triviaQuestion").html(questions[i].question);
 		$("#op1").html(questions[i].option1);
@@ -177,18 +181,21 @@ $( document ).ready(function() {
 		answerText = questions[i].answertxt;
 	}
 
+	// hide the question div, update image and show image div. Wait 5 seconds then on to next question. If last question, show call results function
+
 	function showAnswer() {
 		var tImg = "<img src='assets/images/"+qImage+"' width='400px'/>"
 		$("#questCont").hide();
 		$("#imageDiv").html(tImg);
 		$("#imageDiv").show();
         if (i === questions.length) {
-			setTimeout(showResults, 4000);
+			setTimeout(showResults, 5000);
 		} else {
-			setTimeout(nextQuestion, 4000);
+			setTimeout(nextQuestion, 5000);
 		}
 	}
 
+	// listen for click on "list-group". Check if answer is correct and update response. Call show answer to display image.
 	$(".list-group-item").on("click", function() {
 		clearInterval(countdownTimer);
 
@@ -204,11 +211,11 @@ $( document ).ready(function() {
         showAnswer();
 	})
 
+	// update results div and show(). Hide other irrelavent divs. Change text on start button and show()
 	function showResults() {
-		console.log("Correct "+ qCorrect);
-		console.log("Incorrect "+qIncorrect);
 		$("#txtCorrect").html("Correct Answers: "+ qCorrect);
 		$("#txtIncorrect").html("Incorrect Answers: "+ qIncorrect);
+		$("#txtUnanswered").html("Unanswered: "+ qUnanswered);
 		$("#imageDiv").hide();
 		$("#resultsDiv").show();
 		$("#triviaQuestion").hide();
@@ -217,9 +224,12 @@ $( document ).ready(function() {
 		$("#startBtn").show();
 	}
 
+	// button to start game
 	$("#startBtn").on("click", function() {
 		gameReset();
 	});
+
+	//next three lines execute at page load. Three items hidden until game is started
 	$("#questCont").hide();
 	$("#resultsDiv").hide();
 	$("#timer").hide();
